@@ -5,15 +5,24 @@
     Please fill in the form to play Mad Libs!
 </h1>
 
+<br>
+<br>
+
 <form role="form" method="POST">
 	
-	{% for word in inputs %}
+	{% for word in to_replace %}
 	    <div class="form-group">
-	        <label for={{ word[0] }}>{{ word[1] }}</label>
-	        <input type="text" class="form-control" id="word_input" name={{ word[0] }} required>
+	        <label for="new word">{{ word[2] }}</label>
+	        <input type="text" class="form-control" name="new_word" required>
+	    </div>
+	    <div class="form-group">
+	        <input type="hidden" class="form-control" name="raw_word" value={{ word[0] }} required>
+	    </div>
+	    <div class="form-group">
+	        <input type="hidden" class="form-control" name="pos_tag" value={{ word[1] }} required>
 	    </div>
 	{% endfor %}
-	
+
 	<button type="submit" class="btn btn-default">Submit</button>
 
 </form>

@@ -1,0 +1,17 @@
+Tag,Description
+CD,Cardinal number
+JJ,Adjective
+JJR,"Adjective, comparative"
+JJS,"Adjective, superlative"
+NN,"Noun, singular or mass"
+NNS,"Noun, plural"
+NNP,"Proper noun, singular"
+NNPS,"Proper noun, plural"
+RBR,"Adverb, comparative"
+RBS,"Adverb, superlative"
+VB,"Verb, base form"
+VBD,"Verb, past tense"
+VBG,"Verb, gerund or present participle"
+VBN,"Verb, past participle"
+VBP,"Verb, non-3rd person singular present"
+VBZ,"Verb, 3rd person singular present"
