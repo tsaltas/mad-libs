@@ -1,1 +1,1 @@
-web: gunicorn mad_libs:app
+web: gunicorn mad_libs:app --log-file -
