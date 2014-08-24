@@ -1,0 +1,1 @@
+web: gunicorn mad_libs:app
