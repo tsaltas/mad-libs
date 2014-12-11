@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% for story in stories %}
+		<p>
+			<a href ="{{ url_for('input_form', story_id = story.id) }}"> {{ story.title }} </a>
+		</p>
+	{% endfor %}
+{% endblock %}

@@ -9,7 +9,7 @@ from database import Base, engine
 class Story(Base):
     __tablename__ = "stories"
 
-    id = Column(Integer, Sequence("post_id_sequence"), primary_key=True)
+    id = Column(Integer, Sequence("story_id_sequence"), primary_key=True)
     title = Column(String(1024))
     author = Column(String(1024))
     content = Column(Text)

@@ -1,23 +1,26 @@
 from flask import render_template, request
+
 from mad_libs import app
+from database import session
+from models import Story
 
 from helpers import *
-
-# load raw story texts with POS labels outside main routes to save time
-raw_text = load_raw_text()
 
 # ----Home page---- #
 
 @app.route("/")
-def story_list():
-	pass
+def stories():
+	stories = session.query(Story)
+	stories = stories.order_by(Story.datetime.desc())
+	stories = stories.all()
+	return render_template("stories.html", stories=stories)
+
+# ----User can create new stories---- #
 
 @app.route("/new_story", methods=["GET"])
 def new_story_get():
 	# Get new story from user
 	pass
-
-# ----User can create new stories---- #
 
 @app.route("/new_story", methods=["POST"])
 def new_story_post():
@@ -26,15 +29,15 @@ def new_story_post():
 
 # ----User can play mad libs---- #
 
-@app.route("/mad_libs", methods=["GET"])
-def input_form():
-	
-	# Get appropriate story text
+@app.route("/mad_libs/<story_id>", methods=["GET"])
+def input_form(story_id):
+	story = session.query(Story).get(story_id)
+	raw_text = tokenize_text(story.content)
 
 	# Find 5 most common words to replace and send to the input form template
 	return render_template("input_form.html", to_replace=words_to_replace(raw_text, 5))
 
-@app.route("/mad_libs", methods=["POST"])
+@app.route("/mad_libs/<story_id>", methods=["POST"])
 def display_story():
 	
 	# Turn request form data into helpful list of tuples

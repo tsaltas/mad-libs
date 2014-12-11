@@ -31,15 +31,11 @@ def load_contractions():
 
 	return contractions
 
-#TODO: enable different texts
-def load_raw_text():
+def tokenize_text(content):
 	"""
-	Load, tokenize, and label POS for story text
+	Tokenize story text using python NLTK
 	"""
-	story_file = "mad_libs/static/story.txt"
-	with open(story_file, "r") as f2:
-		story_text = f2.read()
-	return pos_tag(word_tokenize(story_text))
+	return pos_tag(word_tokenize(content))
 
 def words_to_replace(raw_text, n):
 	"""
