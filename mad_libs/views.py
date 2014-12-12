@@ -1,4 +1,6 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
+
+import mistune
 
 from mad_libs import app
 from database import session
@@ -19,13 +21,19 @@ def stories():
 
 @app.route("/new_story", methods=["GET"])
 def new_story_get():
-	# Get new story from user
-	pass
+	return render_template("new_story.html")
 
 @app.route("/new_story", methods=["POST"])
 def new_story_post():
+	story = Story(
+		title=request.form["title"],
+		author = request.form["author"],
+		content=request.form["content"]
+	)
+	session.add(story)
+	session.commit()
 	# Redirect user to form to fill in words
-	pass
+	return redirect(url_for('input_form', story_id = story.id))
 
 # ----User can play mad libs---- #
 
