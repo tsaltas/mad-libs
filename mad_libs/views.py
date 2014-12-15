@@ -1,7 +1,5 @@
 from flask import render_template, request, redirect, url_for
 
-import mistune
-
 from mad_libs import app
 from database import session
 from models import Story
