@@ -1,7 +1,12 @@
+h1, h2 {
+    text-align: center;
+}
+
 .text_block {
 	
 }
 
-h1, h2 {
-    text-align: center;
+.replaced {
+	background-color: yellow;
+    color: black;
 }

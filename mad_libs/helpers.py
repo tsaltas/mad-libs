@@ -93,7 +93,7 @@ def replace_words(raw_text, replacement):
 		for new_word in replacement:
 			if (word_tuple[0] == new_word[0] and word_tuple[1] == new_word[1]):
 				# highlight the replaced words in the text using HTML
-				new_text[index] = ("<mark>" + new_word[2] + "</mark>", new_word[1])
+				new_text[index] = ("<span class=\"-replaced-\">" + new_word[2] + "</span>", new_word[1])
 	
 	return join_word_tokenized_text(new_text)
 	
