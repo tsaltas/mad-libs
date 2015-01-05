@@ -1,3 +1,4 @@
+import sys
 import csv
 
 import nltk.data
@@ -11,25 +12,31 @@ def load_POS_tags():
 	Load part of speech tags and descriptions into dictionary data structure
 	"""	
 	pos_file = "mad_libs/static/tags_to_replace.csv"
-	with open(pos_file, "r") as f:
-		pos_tags = {}
-		reader = csv.reader(f)
-		for row in reader:
-			pos_tags[row[0]] = row[1]
-	return pos_tags
+	try:
+		with open(pos_file, "r") as f:
+			pos_tags = {}
+			reader = csv.reader(f)
+			for row in reader:
+				pos_tags[row[0]] = row[1]
+		return pos_tags
+	except IOError as e:
+		print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
 def load_contractions():
 	"""
 	Load list of contractions into dictionary data structure
 	"""	
 	contractions_file = "mad_libs/static/contractions.csv"
-	with open(contractions_file, "rU") as f:
-		contractions = {}
-		reader = csv.reader(f)
-		for row in reader:
-			contractions[row[1]] = row[0]
+	try:
+		with open(contractions_file, "rU") as f:
+			contractions = {}
+			reader = csv.reader(f)
+			for row in reader:
+				contractions[row[1]] = row[0]
 
-	return contractions
+		return contractions
+	except IOError as e:
+		print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
 def tokenize_text(content):
 	"""
