@@ -1,5 +1,6 @@
 import os
 import unittest
+import nltk_data
 
 # Configure our app to use the testing configuration
 os.environ["CONFIG_PATH"] = "mad_libs.config.TestingConfig"
