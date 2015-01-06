@@ -37,8 +37,32 @@ class TestHelpers(unittest.TestCase):
 		self.assertEqual(contractions["who 're"], "who're")
 
 	def test_words_to_replace(self):
-		"""XXX"""
-		pass
+		""" Test function that finds n most common words to replace """
+		test_string1 = "Hello Hello Hello Goodbye Goodbye Goodbye What What What He He He"
+		test_string2 = "Hello Hello Hello Goodbye Goodbye What"
+		tokenized1 = helpers.tokenize_text(test_string1)
+		tokenized2 = helpers.tokenize_text(test_string2)
+		
+		to_replace1 = helpers.words_to_replace(tokenized1, 4)
+		to_replace2 = helpers.words_to_replace(tokenized2, 2)
+
+		# Test that the output is in expected format
+		self.assertEqual(len(to_replace1), 4)
+		self.assertEqual(len(to_replace2), 2)
+
+		self.assertEqual(type(to_replace1[0]), tuple)
+		self.assertEqual(type(to_replace1[0][0]), str)
+		self.assertEqual(type(to_replace1[0][1]), str)
+		self.assertEqual(type(to_replace1[0][2]), str)
+
+		# Test that the output has expected values
+		words1 = [element[0] for element in to_replace1]
+		words1.sort()
+		words2 = [element[0] for element in to_replace2]
+		words2.sort()
+
+		self.assertEqual(words1, ["Goodbye", "He", "Hello", "What"])
+		self.assertEqual(words2, ["Goodbye", "Hello"])
 
 	def test_process_user_input(self):
 		"""XXX"""

@@ -98,7 +98,7 @@ def words_to_replace(raw_text, n):
 	# Filter for the parts of speech that interest us (contained in pos_tags, not a verb to be)
 	most_frequent = Counter(filter(lambda x: (x[0] not in verbs_to_be and x[1] in POS_tags), raw_text)).most_common(n)
 
-	# Pass the template the list of 5 words to replace
+	# Pass the template the list of n words to replace
 	# Save 1) the original word 2) the POS label to replace correctly later and 3) the POS description for the input form
 	to_replace = []
 	
