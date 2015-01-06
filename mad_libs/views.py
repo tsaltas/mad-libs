@@ -41,7 +41,7 @@ def input_form(story_id):
 	raw_text = tokenize_text(story.content)
 
 	# Find 5 most common words to replace and send to the input form template
-	return render_template("input_form.html", to_replace=words_to_replace(raw_text, len(raw_text)/20), title=story.title)
+	return render_template("input_form.html", to_replace=words_to_replace(raw_text, max(5, len(raw_text)/20)), title=story.title)
 
 @app.route("/mad_libs/<story_id>", methods=["POST"])
 def display_story(story_id):

@@ -5,8 +5,8 @@ import unittest
 os.environ["CONFIG_PATH"] = "mad_libs.config.TestingConfig"
 
 from mad_libs import app
+from mad_libs import helpers
 from mad_libs.models import Story
-from mad_libs.helpers import *
 from mad_libs.database import Base, engine, session
 
 class TestViews(unittest.TestCase):

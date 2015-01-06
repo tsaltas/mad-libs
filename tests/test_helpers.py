@@ -5,9 +5,7 @@ import unittest
 os.environ["CONFIG_PATH"] = "mad_libs.config.TestingConfig"
 
 from mad_libs import app
-from mad_libs.models import Story
 from mad_libs import helpers
-from mad_libs.database import Base, engine, session
 
 class TestHelpers(unittest.TestCase):
 	""" Tests for the mad-libs helper functions """
@@ -15,14 +13,6 @@ class TestHelpers(unittest.TestCase):
 	def setup(self):
 		""" Test setup """
 		self.client = app.test_client()
-
-		# Set up the tables in the database
-		Base.metadata.create_all(engine)
-
-	def tear_down(self):
-		""" Test teardown """
-		# Remove the tables and their data from the database
-		Base.metadata.drop_all(engine)
 
 	def test_load_contractions(self):
 		""" Make sure it's tokenizing contractions appropriately and covering different cases """
@@ -63,14 +53,6 @@ class TestHelpers(unittest.TestCase):
 
 		self.assertEqual(words1, ["Goodbye", "He", "Hello", "What"])
 		self.assertEqual(words2, ["Goodbye", "Hello"])
-
-	def test_process_user_input(self):
-		"""XXX"""
-		pass
-
-	def test_replace_words(self):
-		"""XXX"""
-		pass
 
 	def test_join_word_tokenized_text(self):
 		""" Joining back together text that has been tokenized by NLTK """
