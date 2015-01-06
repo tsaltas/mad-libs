@@ -27,14 +27,14 @@ class TestHelpers(unittest.TestCase):
 	def test_load_contractions(self):
 		""" Make sure it's tokenizing contractions appropriately and covering different cases """
 		contractions = helpers.load_contractions()
-		self.assertEqual("are n't", contractions["aren't"])
-		self.assertEqual("Are n't", contractions["Aren't"])
-		self.assertEqual("ARE N'T", contractions["AREN'T"])
-		self.assertEqual("Ca n't", contractions["Can't"])
-		self.assertEqual("she 's", contractions["she's"])
-		self.assertEqual("THEY 'LL", contractions["THEY'LL"])
-		self.assertEqual("Were n't", contractions["Weren't"])
-		self.assertEqual("who 're", contractions["who're"])
+		self.assertEqual(contractions["are n't"], "aren't")
+		self.assertEqual(contractions["Are n't"], "Aren't")
+		self.assertEqual(contractions["ARE N'T"], "AREN'T")
+		self.assertEqual(contractions["Ca n't"], "Can't")
+		self.assertEqual(contractions["she 's"], "she's")
+		self.assertEqual(contractions["THEY 'LL"], "THEY'LL")
+		self.assertEqual(contractions["Were n't"], "Weren't")
+		self.assertEqual(contractions["who 're"], "who're")
 
 	def test_words_to_replace(self):
 		"""XXX"""
@@ -57,23 +57,22 @@ class TestHelpers(unittest.TestCase):
 		strings.append("Hello, my name is Shannon.")
 		# Try a question
 		strings.append("What is your favorite programming language?")
-		# Try some contraction
+		# Try some contractions, in different cases
 		strings.append("What's that he's saying?")
-		strings.append("Can't do that.")
+		strings.append("CAN'T DO THAT.")
 		strings.append("Isn't it a shame?")
 		strings.append("He'd like that.")
-		# Try a quotation
+		strings.append("I didn't believe it.")
+		# Try some different kinds of quotations
 		strings.append("My favorite book is 'The Left Hand of Darkness' by Ursula K. LeGuin.")
-		# Try quotations and contractions
+		strings.append("My favorite book is \"The Left Hand of Darkness\" by Ursula K. LeGuin.")
+		strings.append("My favorite book is ''The Left Hand of Darkness'' by Ursula K. LeGuin.")
+		strings.append("My favorite book is ``The Left Hand of Darkness`` by Ursula K. LeGuin.")
+		# Try quotations and contractions together
 		strings.append("\"Can we go to the store?\" 'I don't feel like it,' he answered. \"But we're out of milk!\" she exclaimed.")
+		# Some random sentences from the internet.
+		strings.append("The devices wound with copper are usually replaced every two-to-five years, depending on which type you have.")
+		strings.append("Metallurgists among you should be aware that the strings are made from 80% copper and 20% zinc to give a clear, bright response.")
 
 		for string in strings:
-			#print "string:"
-			#print helpers.single_to_double_quotes(string)
-			#print "tokenized:"
-			#print helpers.tokenize_text(string)
-			#for key, value in helpers.load_contractions().iteritems():
-				#print helpers.tokenize_text(key)
-
 			self.assertEqual(helpers.single_to_double_quotes(string), helpers.join_word_tokenized_text(helpers.tokenize_text(string)))
-		pass

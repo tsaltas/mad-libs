@@ -34,12 +34,12 @@ def load_contractions():
 			for row in reader:
 				word = row[0]
 				# Lowercase
-				contractions[word] = ' '.join(word_tokenize(word))
+				contractions[' '.join(word_tokenize(word))] = word
 				# First letter capitalized
 				word = word[0].upper() + word[1:]
-				contractions[word] = ' '.join(word_tokenize(word))
+				contractions[' '.join(word_tokenize(word))] = word
 				# Uppercase
-				contractions[word.upper()] = ' '.join(word_tokenize(word.upper()))
+				contractions[' '.join(word_tokenize(word.upper()))] = word.upper()
 
 		return contractions
 	except IOError as e:
@@ -51,17 +51,31 @@ def single_to_double_quotes(string):
 	"""
 	# Replace single quotes (not in contractions or apostrophes) with double quotes
 	# This will make it easier to rejoin text later
-	
-	# Turn something like 'The Catcher in the Rye' into "The Catcher in the Rye"
-	string = string.replace("' ", "\" ")
+
+	punct_list = [
+				",",
+				";",
+				":",
+				".",
+				"?",
+				"!",
+				" "
+				]
+
+	# Replace '' with "
+	string = string.replace(" \'\'", " \"")
+	for punct in punct_list:
+		string = string.replace("\'\'" + punct, "\"" + punct)
+
+	# Replace ' with "
 	string = string.replace(" '", " \"")
+	for punct in punct_list:
+		string = string.replace("'" + punct, "\"" + punct)
 
 	# Replace `` with "
-	string = string.replace("`` ", "\" ")
 	string = string.replace(" ``", " \"")
-	# Replace '' with "
-	string = string.replace("\'\' ", "\" ")
-	string = string.replace(" \'\'", " \"")
+	for punct in punct_list:
+		string = string.replace("``" + punct, "\"" + punct)
 	
 	return string
 
@@ -140,53 +154,48 @@ def join_word_tokenized_text(tokenized_string):
 	tokenized_string = ' '.join(word[0] for word in tokenized_string)
 	
 	# Clean up punctuation issues caused by the join inserting spaces before punctuation
-	# 4 key issues:
+	# 6 key issues:
+	
 	# 1) Space before punctuation at end of clause: "I joined the text , but ..."
 	# 2) Space before punctuation at end of sentence: "It doesn't look right ."
+	# 3) Space before funny symbols mid-sentence: "We aim to get 95 % of these correct."
 	punct_list = [
-				 (" ,", ","),
-				 (" ;", ";"),
-				 (" :", ":"),
-				 (" .", "."),
-				 (" ?", "?"),
-				 (" !", "!")
-				 ]
+				",",
+				";",
+				":",
+				".",
+				"?",
+				"!",
+				"%"
+				]
 	
 	for punct in punct_list:
-		tokenized_string = tokenized_string.replace(punct[0], punct[1])
+		tokenized_string = tokenized_string.replace(" " + punct, punct)
 
-	# 3) Space before apostrophe in contractions: "It 's still not right."
+	# 4) Space before apostrophe in contractions: "It 's still not right."
 	for key, value in load_contractions().iteritems():
 		tokenized_string = tokenized_string.replace(key, value)
 
-	# 4) Remove spaces between before apostrophe s: "Shannon 's"
+	# 5) Remove space before apostrophe s: "Shannon 's"
 	tokenized_string = tokenized_string.replace(" \'s", "\'s")
 
-	# 5) Convert single to double quotes
+	# 6) Convert any funny single quotes to normal double quotes
 	tokenized_string = single_to_double_quotes(tokenized_string)
 
-	# 6) Remove spaces between quotation marks and quoted text: "She thought, ' geez, that's annoying '."
+	# 7) Remove spaces between quotation marks and quoted text: " This is really annoying. "
 	quote_count = 0
 	to_remove = []
 	for index, char in enumerate(tokenized_string):
 		if char == "\"":
-			# If it's a contraction, pass
-			if ((index < len(tokenized_string) - 2 and tokenized_string[index + 1] != " ") and tokenized_string[index - 1] != " "):
-				pass
-			# If it's a possessive 's, pass
-			if (index < len(tokenized_string) - 2 and tokenized_string[index + 1] == "s"):
-				pass
-			# If it's a quotation mark, fix the spaces
-			else:
-				quote_count += 1
-				# If it's an end quote
-				if quote_count % 2 == 0:
-					# Remove the space before
-					to_remove.append(index - 1)
-				# If it's an opening quote
-				else:
-					# Remove the space after
-					to_remove.append(index + 1)
+			quote_count += 1
+			# If it's an end quote
+			if (tokenized_string[index - 1] == " " and quote_count % 2 == 0):
+				# Remove the space before
+				to_remove.append(index - 1)
+			# If it's an opening quote
+			elif (tokenized_string[index + 1] == " "):
+				# Remove the space after
+				to_remove.append(index + 1)
 	
 	for i in range(0,len(to_remove)):
 		tokenized_string = tokenized_string[0:to_remove[i]] + tokenized_string[to_remove[i] + 1:len(tokenized_string)]
