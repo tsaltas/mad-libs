@@ -1,21 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}Stories{% endblock %} 
+{% block title %}Mad Libs{% endblock %} 
 
 {% block content %}
 	<div class="jumbotron">
-  		<h1>Welcome to Mad Libs!</h1>
-  		<h1><small><a class="btn btn-primary btn-lg" href="{{ url_for('about') }}" role="button">About Mad Libs</a></small></h1>
+  		<h1>
+  			Welcome to Mad Libs!
+  			<br>
+  			<small>Click on a story title to play the game.</small>
+  		</h1>
+  		<br>
+  		<div class = "centered">
+  			<a class="btn btn-primary btn-lg" href="{{ url_for('about') }}" role="button">About Mad Libs</a>
+  		</div>
 	</div>
 
+<div class="centered">
+<ul class="list-inline">
 {% for story in stories %}
-		<p>
+	<li>
+		<div class="padded">
 			<a class="btn btn-default btn-lg" href ="{{ url_for('input_form', story_id = story.id) }}" role="button"> {{ story.title }} </a>
-		</p>
-	{% endfor %}
-
-	<p>
-		<a class="btn btn-primary btn-lg" href ="{{ url_for('new_story_get') }}" role="button"> ... or create your own story </a>
-	</p>
-
+		</div>
+	</li>
+{% endfor %}
+	<li>
+		<div class="padded">
+			<a class="btn btn-primary btn-lg" href ="{{ url_for('new_story_get') }}" role="button"> ... or create your own story </a>
+		</div>
+	</li>
 {% endblock %}
+</ul>
+</div>
