@@ -2,11 +2,7 @@ h1, h2 {
     text-align: center;
 }
 
-.text_block {
-	
-}
-
 .replaced {
-	background-color: yellow;
-    color: black;
+	text-decoration:underline;
+	background:yellow;
 }

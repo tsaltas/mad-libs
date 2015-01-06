@@ -6,39 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <title>{% block title %}{% endblock %} </title>
-
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <!-- Mad Libs CSS -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <!-- Style Sheets -->
+            <!-- Bootstrap -->
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+            <!-- Mad Libs -->
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
         <!-- JavaScript -->
-        <!-- jQuery -->
-        <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <!-- Bootstrap -->
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <!-- jQuery -->
+            <script src="{{ url_for('static', filename='js/jquery-2.1.3.min.js') }}"></script>
+            <!-- Bootstrap -->
+            <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     </head>
 
     <body>
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ url_for('stories') }}">Stories</a>
-                    <a class="navbar-brand" href="{{ url_for('about') }}">About</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                    </ul>
-                </div>
-            </div>
-        </div>
-
         <div class="container">
             {% block content %}{% endblock %}
         </div>

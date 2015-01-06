@@ -4,28 +4,22 @@
 
 {% block content %}
 
-<h1>About Mad Libs</h1>
+	<div class="jumbotron">
+  		<h1>About Mad Libs</h1>
 
-	<div class = "text_block">
-	"Mad Libs" is a word game invented by Leonard Stern and Roger Price, who published the first Mad Libs book in 1958. A Mad Libs book contains short stories or narratives with certain key words blanked out. One player prompts the other player for words to fill in the blanks in the story (like "adjective" or "male celebrity"). The first player then reads the often nonsenical and hilarious story back to the second player.
-	</div>
+		<div class = "h2"><small>
+		"Mad Libs" is a word game invented by Leonard Stern and Roger Price, who published the first Mad Libs book in 1958. A Mad Libs book contains short stories or narratives with certain key words blanked out. One player prompts the other player for words to fill in the blanks in the story ("give me an adjective" or "name a male celebrity"). The first player then reads the often nonsenical and hilarious story back to the second player.
+		</small></div>
 
-	</br>
-	
-	<div class = "text_block">
-	The game is a good way for children to have fun while learning about the various parts of speech.
-	</div>
+		<div class = "h2"><small>
+		I created this app in 2014 as a small project to practice building web applications using Flask. I loved Mad Libs games as a child, and I wanted an opportunity to work with the Python natural language processing toolkit.
+		</small></div>
 
-	</br>
-	
-	<div class = "text_block">
-	I created this app in 2014 as a small project to practice building web applications using Flask. I loved Mad Libs games as a child, and I wanted an opportunity to work with the Python natural language processing toolkit.
-	</div>
+		<div class = "h2"><small>
+		I hope you will take a few minutes to play the game, and that it might bring a smile and a laugh into your day.
+		</small></div>
 
-	</br>
-
-	<div class = "text_block">
-	I hope the game will bring a smile and a laugh into your day.
+		<h1><small><a class="btn btn-primary btn-lg" href="{{ url_for('stories') }}" role="button">Play Mad Libs</a></small></h1>
 	</div>
 
 {% endblock %}

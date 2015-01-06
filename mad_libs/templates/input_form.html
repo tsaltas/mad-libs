@@ -4,10 +4,11 @@
 
 {% block content %}
 	<h1>
-	    {{ title }}
+		{{ title }}
+		<br>
+		<small>Submitted by {{ author }} on {{ date | dateformat("%m/%d/%y") }}</small>
 	</h1>
 
-	<br>
 	<br>
 
 	<form role="form" method="POST">

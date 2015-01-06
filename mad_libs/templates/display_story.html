@@ -3,14 +3,16 @@
 {% block title %}{{ title }}{% endblock %} 
 
 {% block content %}
+	<h1>
+		{{ title }}
+		<br>
+		<small>Submitted by {{ author }} on {{ date | dateformat("%m/%d/%y") }}</small>
+	</h1>
 
-<h1>{{ title }}</h1>
-<h2>Submitted by {{ author }} on {{ date | dateformat("%m/%d/%y") }}</h2>
+	<br>
 
-<br>
-
-<div class = "text_block">
-	{{ story|safe }}
-</div>
+	<p>
+		{{ story|safe }}
+	</p>
 
 {% endblock %}
