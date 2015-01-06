@@ -32,16 +32,44 @@ def load_contractions():
 			contractions = {}
 			reader = csv.reader(f)
 			for row in reader:
-				contractions[row[1]] = row[0]
+				word = row[0]
+				# Lowercase
+				contractions[word] = ' '.join(word_tokenize(word))
+				# First letter capitalized
+				word = word[0].upper() + word[1:]
+				contractions[word] = ' '.join(word_tokenize(word))
+				# Uppercase
+				contractions[word.upper()] = ' '.join(word_tokenize(word.upper()))
 
 		return contractions
 	except IOError as e:
 		print "I/O error({0}): {1}".format(e.errno, e.strerror)
 
+def single_to_double_quotes(string):
+	"""
+	Replace single quotes with double quotes
+	"""
+	# Replace single quotes (not in contractions or apostrophes) with double quotes
+	# This will make it easier to rejoin text later
+	
+	# Turn something like 'The Catcher in the Rye' into "The Catcher in the Rye"
+	string = string.replace("' ", "\" ")
+	string = string.replace(" '", " \"")
+
+	# Replace `` with "
+	string = string.replace("`` ", "\" ")
+	string = string.replace(" ``", " \"")
+	# Replace '' with "
+	string = string.replace("\'\' ", "\" ")
+	string = string.replace(" \'\'", " \"")
+	
+	return string
+
 def tokenize_text(content):
 	"""
 	Tokenize story text using python NLTK
 	"""
+	content = single_to_double_quotes(content)
 	return pos_tag(word_tokenize(content))
 
 def words_to_replace(raw_text, n):
@@ -131,22 +159,17 @@ def join_word_tokenized_text(tokenized_string):
 	for key, value in load_contractions().iteritems():
 		tokenized_string = tokenized_string.replace(key, value)
 
-	# 4) Remove spaces between quotation marks and quoted text: "She thought, ' geez, that's annoying '."
-	# first replace single quotes
-	single_quotes = [
-				 ("``", "\""),
-				 ("\'\'", "\""),
-				 (" \'s", "\'s")
-				 ]
+	# 4) Remove spaces between before apostrophe s: "Shannon 's"
+	tokenized_string = tokenized_string.replace(" \'s", "\'s")
 
-	for quote in single_quotes:
-		tokenized_string = tokenized_string.replace(quote[0], quote[1])
+	# 5) Convert single to double quotes
+	tokenized_string = single_to_double_quotes(tokenized_string)
 
-	# then remove excess spaces
+	# 6) Remove spaces between quotation marks and quoted text: "She thought, ' geez, that's annoying '."
 	quote_count = 0
 	to_remove = []
 	for index, char in enumerate(tokenized_string):
-		if (char == "\"" or char == "\'"):
+		if char == "\"":
 			# If it's a contraction, pass
 			if ((index < len(tokenized_string) - 2 and tokenized_string[index + 1] != " ") and tokenized_string[index - 1] != " "):
 				pass
