@@ -10,7 +10,7 @@ from mad_libs import helpers
 class TestHelpers(unittest.TestCase):
 	""" Tests for the mad-libs helper functions """
 
-	def setup(self):
+	def setUp(self):
 		""" Test setup """
 		self.client = app.test_client()
 
