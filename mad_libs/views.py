@@ -42,7 +42,7 @@ def input_form(story_id):
 
 	# Find most common words to replace and send to the input form template
 	return render_template("input_form.html"
-		, to_replace=words_to_replace(raw_text, max(5, len(raw_text)/30))
+		, to_replace=words_to_replace(raw_text, max(5, len(raw_text)/50))
 		, title=story.title
 		, author=story.author
 		, date=story.datetime
