@@ -1,3 +1,4 @@
+import os
 import sys
 import csv
 
@@ -7,11 +8,16 @@ from nltk.tag import pos_tag
 
 from collections import Counter
 
+from flask import url_for
+
+from mad_libs import app
+
 def load_POS_tags():
 	"""
 	Load part of speech tags and descriptions into dictionary data structure
 	"""	
-	pos_file = "mad_libs/static/tags_to_replace.csv"
+	pos_file = app.root_path + '/static/tags_to_replace.csv'
+	
 	try:
 		with open(pos_file, "r") as f:
 			pos_tags = {}
