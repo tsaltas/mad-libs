@@ -7,5 +7,10 @@ class DevelopmentConfig(object):
 
 class TestingConfig(object):
 	SQLALCHEMY_DATABASE_URI = "sqlite:///mad-libs-testing.db"
-	DEBUG = False
+	DEBUG = True
 	SECRET_KEY = "Not secret"
+
+class DeploymentConfig(object):
+	SQLALCHEMY_DATABASE_URI = "sqlite:///mad-libs.db"
+	DEBUG = False
+	SECRET_KEY = os.environ.get("MADLIBS_SECRET_KEY", "")
