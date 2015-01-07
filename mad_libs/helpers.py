@@ -34,7 +34,8 @@ def words_to_replace(raw_text, n):
 	"""
 	POS_tags = load_POS_tags()
 
-	verbs_to_be = ["is"
+	verbs_to_be = [
+		"is"
 		, "isn't"
 		, "he's"
 		, "she's"
@@ -69,7 +70,7 @@ def words_to_replace(raw_text, n):
 	to_replace = []
 	
 	for entry in most_frequent:
-		word = entry[0][0]
+		word = str(entry[0][0].strip()).translate(None, '.,!:;?')
 		POS_tag = entry[0][1]
 		POS_desc = POS_tags[POS_tag]
 		word_tuple = (word, POS_desc)
@@ -86,11 +87,18 @@ def process_user_input(f):
 
 	# Create a list of tuples to help us find and replace words
 	for i in range(0,len(f.getlist('raw_word'))):
-		if f.getlist('raw_word')[i].istitle():
+		# Remove trailing spaces from words
+		raw_word = f.getlist('raw_word')[i].strip()
+		new_word = f.getlist('new_word')[i].strip()
+		# Remove punctuation from words
+		raw_word = str(raw_word).translate(None, '.,!:;?')
+		new_word = str(new_word).translate(None, '.,!:;?')
+
+		if raw_word.istitle():
 			# Make sure proper nouns get capitalized
-			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i].title()))
+			replacement.append((raw_word, new_word.title()))
 		else:
-			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i]))
+			replacement.append((raw_word, new_word))
 
 	return replacement
 
@@ -99,8 +107,32 @@ def replace_words(raw_text, replacement):
 	Replace certain words in the raw_text with new mad libs words
 	Replace as specified in replacement array of tuples
 	"""
+	begin_list = [
+		" "
+		, "\n"
+		, "("
+		, ":"
+	]
+
+	end_list = [
+		" "
+		, "."
+		, ","
+		, "!"
+		, ":"
+		, ";"
+		, "'s"
+		, "?"
+		, ")"
+	]
+
 	for word_tuple in replacement:
-		raw_text = raw_text.replace(' '+word_tuple[0]+' ', " <span class=\"replaced\">" + word_tuple[1] + "</span> ")
+		for end in end_list:
+			for begin in begin_list:
+				raw_text = raw_text.replace(
+					begin + word_tuple[0] + end,
+					begin + "<span class=\"replaced\">" + word_tuple[1] + "</span>" + end
+				)
 
 	# Preserve the new lines in the final display
 	raw_text = raw_text.replace("\n", "<br>")
