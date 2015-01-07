@@ -88,9 +88,9 @@ def process_user_input(f):
 	for i in range(0,len(f.getlist('raw_word'))):
 		if f.getlist('raw_word')[i].istitle():
 			# Make sure proper nouns get capitalized
-			replacement.append(' '+f.getlist('raw_word')[i]+' ', ' '+f.getlist('new_word')[i].title()+' ')
+			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i].title()))
 		else:
-			replacement.append(' '+f.getlist('raw_word')[i]+' ', ' '+f.getlist('new_word')[i]+' ')
+			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i]))
 
 	return replacement
 
@@ -100,8 +100,7 @@ def replace_words(raw_text, replacement):
 	Replace as specified in replacement array of tuples
 	"""
 	for word_tuple in replacement:
-		print "replacing " + word_tuple[0] + " with " + word_tuple[1]
-		raw_text = raw_text.replace(word_tuple[0], "<span class=\"replaced\">" + word_tuple[1] + "</span>")
+		raw_text = raw_text.replace(' '+word_tuple[0]+' ', " <span class=\"replaced\">" + word_tuple[1] + "</span> ")
 
 	# Preserve the new lines in the final display
 	raw_text = raw_text.replace("\n", "<br>")
