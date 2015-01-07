@@ -88,9 +88,9 @@ def process_user_input(f):
 	for i in range(0,len(f.getlist('raw_word'))):
 		if f.getlist('raw_word')[i].istitle():
 			# Make sure proper nouns get capitalized
-			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i].title()))
+			replacement.append(' '+f.getlist('raw_word')[i]+' ', ' '+f.getlist('new_word')[i].title()+' ')
 		else:
-			replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i]))
+			replacement.append(' '+f.getlist('raw_word')[i]+' ', ' '+f.getlist('new_word')[i]+' ')
 
 	return replacement
 
