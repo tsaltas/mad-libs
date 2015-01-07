@@ -15,14 +15,11 @@
 		
 		{% for word in to_replace %}
 		    <div class="form-group">
-		        <label for="new word">{{ word[2] }} </label> (e.g. "{{word[0]}}")
+		        <label for="new word">{{ word[1] }} </label> (e.g. "{{word[0]}}")
 		        <input type="text" class="form-control" name="new_word" required>
 		    </div>
 		    <div class="form-group">
 		        <input type="hidden" class="form-control" name="raw_word" value={{ word[0] }} required>
-		    </div>
-		    <div class="form-group">
-		        <input type="hidden" class="form-control" name="pos_tag" value={{ word[1] }} required>
 		    </div>
 		{% endfor %}
 

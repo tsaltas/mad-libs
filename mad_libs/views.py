@@ -42,7 +42,7 @@ def input_form(story_id):
 
 	# Find most common words to replace and send to the input form template
 	return render_template("input_form.html"
-		, to_replace=words_to_replace(raw_text, max(5, len(raw_text)/50))
+		, to_replace=words_to_replace(raw_text, max(5, len(raw_text)/40))
 		, title=story.title
 		, author=story.author
 		, date=story.datetime
@@ -51,13 +51,12 @@ def input_form(story_id):
 @app.route("/mad_libs/<story_id>", methods=["POST"])
 def display_story(story_id):
 	story = session.query(Story).get(story_id)
-	raw_text = tokenize_text(story.content)
 
 	# Turn request form data into more useful list of tuples
 	replacement = process_user_input(request.form)
 
 	return render_template("display_story.html"
-		, story=replace_words(raw_text, replacement)
+		, story=replace_words(story.content, replacement)
 		, title=story.title
 		, author=story.author
 		, date=story.datetime
