@@ -30,9 +30,45 @@ def load_POS_tags():
 
 def tokenize_text(content):
 	"""
-	Tokenize story text using python NLTK
+	Tokenize story text using python NLTK and add part of speech tags
 	"""
-	return pos_tag(word_tokenize(content))
+	original = pos_tag(word_tokenize(content))
+	print original
+	new = []
+	# Do a little cleanup on the tokenized and tagged text
+	punctuation = [
+		","
+		, "."
+		, "'"
+		, "''"
+		, "\""
+		, "``"
+		, ":"
+		, ";"
+		, "?"
+		, "!"
+		, "("
+		, ")"
+		, "/"
+		, "["
+		, "]"
+		, "{"
+		, "}"
+	]
+
+	for word_tuple in original:
+		word = word_tuple[0]
+		pos = word_tuple[1]
+		# Don't bother processing words that are just punctuation
+		if word not in punctuation:
+			# Strip out punctuation from any real words
+			for punct in punctuation:
+				word = word.replace(punct, "")
+			# Convert all to lowercase so we don't double-count individual words
+			word = word.lower()
+			# Add processed tuple back to list
+			new.append((word, pos))
+	return new
 
 def words_to_replace(raw_text, n):
 	"""
@@ -40,8 +76,10 @@ def words_to_replace(raw_text, n):
 	"""
 	POS_tags = load_POS_tags()
 
-	verbs_to_be = [
-		"is"
+	# Some common words to exclude (verb "to be", articles and pronouns that the NLTK tagger often mistakes)
+	to_exclude = [
+		"be"
+		, "is"
 		, "isn't"
 		, "he's"
 		, "she's"
@@ -65,18 +103,32 @@ def words_to_replace(raw_text, n):
 		, "hasn't"
 		, "will"
 		, "won't"
+		, "the"
+		, "and"
+		, "he"
+		, "him"
+		, "she"
+		, "her"
+		, "it"
+		, "they"
+		, "them"
+		, "we"
+		, "us"
+		, "you"
+		, "when"
+		, "if"
 	]
 
 	# Find n most frequent words in the story text
 	# Filter for the parts of speech that interest us (contained in POS_tags, not a verb to be)
-	most_frequent = Counter(filter(lambda x: (x[0] not in verbs_to_be and x[1] in POS_tags), raw_text)).most_common(n)
+	most_frequent = Counter(filter(lambda x: (x[0] not in to_exclude and x[1] in POS_tags), raw_text)).most_common(n)
 
 	# Pass the template the list of n words to replace
 	# Save 1) the original word 2) the POS description for the user input form
 	to_replace = []
 	
 	for entry in most_frequent:
-		word = str(entry[0][0].strip()).translate(None, '.,!:;?')
+		word = entry[0][0]
 		POS_tag = entry[0][1]
 		POS_desc = POS_tags[POS_tag]
 		word_tuple = (word, POS_desc)
@@ -93,18 +145,7 @@ def process_user_input(f):
 
 	# Create a list of tuples to help us find and replace words
 	for i in range(0,len(f.getlist('raw_word'))):
-		# Remove trailing spaces from words
-		raw_word = f.getlist('raw_word')[i].strip()
-		new_word = f.getlist('new_word')[i].strip()
-		# Remove punctuation from words
-		raw_word = str(raw_word).translate(None, '.,!:;?')
-		new_word = str(new_word).translate(None, '.,!:;?')
-
-		if raw_word.istitle():
-			# Make sure proper nouns get capitalized
-			replacement.append((raw_word, new_word.title()))
-		else:
-			replacement.append((raw_word, new_word))
+		replacement.append((f.getlist('raw_word')[i], f.getlist('new_word')[i]))
 
 	return replacement
 
@@ -135,9 +176,22 @@ def replace_words(raw_text, replacement):
 	for word_tuple in replacement:
 		for end in end_list:
 			for begin in begin_list:
+				# lowercase
 				raw_text = raw_text.replace(
 					begin + word_tuple[0] + end,
 					begin + "<span class=\"replaced\">" + word_tuple[1] + "</span>" + end
+				)
+
+				# capitalized
+				raw_text = raw_text.replace(
+					begin + word_tuple[0].title() + end,
+					begin + "<span class=\"replaced\">" + word_tuple[1].title() + "</span>" + end
+				)
+
+				# uppercase
+				raw_text = raw_text.replace(
+					begin + word_tuple[0].upper() + end,
+					begin + "<span class=\"replaced\">" + word_tuple[1].upper() + "</span>" + end
 				)
 
 	# Preserve the new lines in the final display
