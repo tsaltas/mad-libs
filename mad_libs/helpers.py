@@ -159,6 +159,10 @@ def replace_words(raw_text, replacement):
 		, "\n"
 		, "("
 		, ":"
+		, "\""
+		, "'"
+		, "''"
+		, "``"
 	]
 
 	end_list = [
@@ -171,6 +175,10 @@ def replace_words(raw_text, replacement):
 		, "'s"
 		, "?"
 		, ")"
+		, "\""
+		, "'"
+		, "''"
+		, "``"
 	]
 
 	for word_tuple in replacement:
