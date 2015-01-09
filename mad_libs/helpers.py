@@ -33,7 +33,6 @@ def tokenize_text(content):
 	Tokenize story text using python NLTK and add part of speech tags
 	"""
 	original = pos_tag(word_tokenize(content))
-	print original
 	new = []
 	# Do a little cleanup on the tokenized and tagged text
 	punctuation = [

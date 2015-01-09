@@ -22,7 +22,10 @@ def seed():
         , "BeautyandtheBeast.txt"
         , "HanselGretel.txt"
         , "Rapunzel.txt"
-        , "SeaAdventure.txt"]
+        , "SeaAdventure.txt"
+        , "SleepingBeauty.txt"
+        , "LittleRedCap.txt"
+    ]
     
     for filename in file_names:
         file_path = app.root_path + '/static/stories/' + filename
