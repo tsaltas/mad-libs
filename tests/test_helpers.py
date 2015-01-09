@@ -15,15 +15,16 @@ class TestHelpers(unittest.TestCase):
 		self.client = app.test_client()
 
 	def test_load_pos_tags(self):
-		""" Test that pos tags are loading properly """
+		""" Load the POS tags """
 		pos_tags = helpers.load_POS_tags()
 		self.assertEqual(len(pos_tags), 17)
 		self.assertEqual(pos_tags["NNS"], "Noun, plural")
 
 	def test_words_to_replace(self):
-		""" Test function that finds n most common words to replace """
-		test_string1 = "Hello Hello Hello Goodbye Goodbye Goodbye What What What He He He"
-		test_string2 = "Hello Hello Hello Goodbye Goodbye What"
+		""" Find n most common words to replace """
+		# Should find most common words regardless of caps
+		test_string1 = "The dolphin likes to play with the other Dolphin who likes to pretend he is not a DOLPHIN. They often Pretend and PLAY together."
+		test_string2 = "Most hats that I wear are black but some HaTs are brown and other HATS are blue. Some people wear crazy Hats."
 		tokenized1 = helpers.tokenize_text(test_string1)
 		tokenized2 = helpers.tokenize_text(test_string2)
 		
@@ -44,5 +45,22 @@ class TestHelpers(unittest.TestCase):
 		words2 = [element[0] for element in to_replace2]
 		words2.sort()
 
-		self.assertEqual(words1, ["Goodbye", "He", "Hello", "What"])
-		self.assertEqual(words2, ["Goodbye", "Hello"])
+		self.assertEqual(words1, ["dolphin", "likes", "play", "pretend"])
+		self.assertEqual(words2, ["hats", "wear"])
+
+	def test_replace_words(self):
+		""" Replace words in original text with new words """
+		# Should find most common word regardless of caps
+		test_string1 = "The dolphin likes to play with the other Dolphin who likes to pretend he is not a DOLPHIN. They often Pretend and PLAY together."
+		test_string2 = "Most hats that I wear are black but some Hats are brown and other HATS are blue. Some people wear crazy Hats."
+
+		# Create replacement
+		replacement1 = (("dolphin", "frog"), ("likes", "hates"), ("play", "sleep"), ("pretend", "remember"))
+		replacement2 = (("hats", "scarves"), ("wear", "toss"))
+
+		# Do replacement
+		text1 = helpers.replace_words(test_string1, replacement1)
+		text2 = helpers.replace_words(test_string2, replacement2)
+
+		self.assertEqual(text1, "The <span class=\"replaced\">frog</span> <span class=\"replaced\">hates</span> to <span class=\"replaced\">sleep</span> with the other <span class=\"replaced\">Frog</span> who <span class=\"replaced\">hates</span> to <span class=\"replaced\">remember</span> he is not a <span class=\"replaced\">FROG</span>. They often <span class=\"replaced\">Remember</span> and <span class=\"replaced\">SLEEP</span> together.")
+		self.assertEqual(text2, "Most <span class=\"replaced\">scarves</span> that I <span class=\"replaced\">toss</span> are black but some <span class=\"replaced\">Scarves</span> are brown and other <span class=\"replaced\">SCARVES</span> are blue. Some people <span class=\"replaced\">toss</span> crazy <span class=\"replaced\">Scarves</span>.")

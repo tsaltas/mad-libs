@@ -3,7 +3,7 @@ CD,Cardinal number
 JJ,Adjective
 JJR,"Adjective, comparative"
 JJS,"Adjective, superlative"
-NN,"Noun, singular or mass"
+NN,"Noun, singular"
 NNS,"Noun, plural"
 NNP,"Proper noun, singular"
 NNPS,"Proper noun, plural"
