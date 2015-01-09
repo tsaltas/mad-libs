@@ -178,8 +178,8 @@ def replace_words(raw_text, replacement):
 			for begin in begin_list:
 				# lowercase
 				raw_text = raw_text.replace(
-					begin + word_tuple[0] + end,
-					begin + "<span class=\"replaced\">" + word_tuple[1] + "</span>" + end
+					begin + word_tuple[0].lower() + end,
+					begin + "<span class=\"replaced\">" + word_tuple[1].lower() + "</span>" + end
 				)
 
 				# capitalized
