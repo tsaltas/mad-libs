@@ -26,7 +26,7 @@ def load_POS_tags():
 				pos_tags[row[0]] = row[1]
 		return pos_tags
 	except IOError as e:
-		print "I/O error({0}): {1}".format(e.errno, e.strerror)
+		print("I/O error({0}): {1}".format(e.errno, e.strerror))
 
 def tokenize_text(content):
 	"""

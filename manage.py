@@ -1,5 +1,5 @@
 import os
-from flask.ext.script import Manager
+from flask_script import Manager
 
 from mad_libs import app
 
@@ -35,11 +35,11 @@ def seed():
                 story = Story(
                     title = f.readline(),
                     author = f.readline(),
-                    content = unicode(f.read(), errors='ignore')
+                    content = f.read(),
                 )
                 session.add(story)
         except IOError as e:
-            print "I/O error({0}): {1}".format(e.errno, e.strerror)
+            print("I/O error({0}): {1}".format(e.errno, e.strerror))
         
     session.commit()
 

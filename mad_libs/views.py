@@ -1,10 +1,10 @@
 from flask import render_template, request, redirect, url_for
 
 from mad_libs import app
-from database import session
-from models import Story
+from .database import session
+from .models import Story
 
-from helpers import *
+from .helpers import *
 
 # ----Home page---- #
 
@@ -42,7 +42,7 @@ def input_form(story_id):
 
 	# Find most common words to replace and send to the input form template
 	return render_template("input_form.html"
-		, to_replace=words_to_replace(raw_text, max(5, len(raw_text)/40))
+		, to_replace=words_to_replace(raw_text, max(5, round(len(raw_text)/40)))
 		, title=story.title
 		, author=story.author
 		, date=story.datetime
